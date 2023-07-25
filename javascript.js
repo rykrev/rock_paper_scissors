@@ -6,3 +6,18 @@
 // The playRound function will determine who won the round.
 // After each round, return a string through that function that says who won and what move beats the opponent's (computer) move.
 // After five rounds, the console will return who won the majority of those in a game() function.
+
+
+let playerChoice = prompt("What move will you play? Rock, Paper, or Scissors?");
+
+function getComputerChoice() {
+    const moves = ["Rock", 
+    "Scissors", 
+    "Paper"
+];
+
+    let move = moves.random();
+    return move;
+}
+
+console.log(getComputerChoice());
