@@ -16,7 +16,7 @@ while (true) {
     let playerChoice = prompt("What move will you play? Rock, Paper, or Scissors?");
 
     if (playerChoice === null) {
-        console.log("Goodbye!")
+        console.log("Refresh the page if you want to start again. For now, goodbye!")
         throw ''
     }
 
