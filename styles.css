@@ -1,0 +1,14 @@
+.choice {
+    width: 80px;
+    height: 40px;
+}
+
+.data {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.results {
+    display: block;
+}
