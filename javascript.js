@@ -12,31 +12,22 @@ let roundNumber = 0;
 let playerWins = 0;
 let computerWins = 0;
 
-const data = document.querySelector(".data")
-const scoreboard = document.querySelector(".scoreboard")
-const results = document.querySelector(".results")
-const match = document.querySelector(".match")
+const data = document.querySelector(".data");
+const scoreboard = document.querySelector(".scoreboard");
+const match = document.querySelector(".match");
+
+const presults = document.querySelector(".presults");
+const cresults = document.querySelector(".cresults");
+
+const winner = document.querySelector(".winner");
+const roundcount = document.querySelector(".roundcount")
+const redo = document.querySelector(".redo")
 
 const CHOICES = document.querySelectorAll(".choice");
 
 const ROCKCHOICE = document.querySelector(".rock");
 const PAPERCHOICE = document.querySelector(".paper");
 const SCISSORSCHOICE = document.querySelector(".scissors");
-
-CHOICES.forEach((choice) => {
-    choice.addEventListener("click", (e) => {
-    if (choice.getAttribute("id") === "rock") {
-        playerChoice = "Rock";
-        round(playerChoice, getComputerChoice());
-    } else if (choice.getAttribute("id") === "scissors") {
-        playerChoice = "Scissors";
-        round(playerChoice, getComputerChoice());
-    } else if (choice.getAttribute("id") === "paper") {
-        playerChoice = "Paper";
-        round(playerChoice, getComputerChoice());
-    }
-    })
-});
 
 if (playerChoice === null) {
         console.log("Refresh the page if you want to start again. For now, goodbye!")
@@ -104,20 +95,20 @@ function round(playerSelection, computerSelection) {
     }
 
     if (playerWins == 0) {
-        results.textContent = "You currently have no wins.";
+        presults.textContent = "You currently have no wins.";
         } else if (playerWins == 1) {
-        results.textContent = `You currently have ${playerWins} win.`;
+        presults.textContent = `You currently have ${playerWins} win.`;
         } else {
-        results.textContent = `You currently have ${playerWins} wins.`;
+        presults.textContent = `You currently have ${playerWins} wins.`;
         }
 
 
     if (computerWins == 0) {
-    results.textContent = "The computer currently has no wins.";
+    cresults.textContent = "The computer currently has no wins.";
     } else if (computerWins == 1) {
-    results.textContent = `The computer currently has ${computerWins} win.`;
+    cresults.textContent = `The computer currently has ${computerWins} win.`;
     } else {
-    results.textContent = `The computer currently has ${computerWins} wins.`;
+    cresults.textContent = `The computer currently has ${computerWins} wins.`;
     }
 
 
@@ -125,34 +116,60 @@ function round(playerSelection, computerSelection) {
     return roundNumber;
 }   
 
-    // function game(roundNum) {
-    //     if (roundNum % 5 == 0) {
-    //         console.log("Game completed!");
-    //         if (playerWins > computerWins) {
-    //                 console.log("Looks like you won this game! Nice job! Now why don't you try again...");
-    //             } else if (playerWins < computerWins) {
-    //                 console.log("The computer won! You lost to an algorithm. Why don't you try again?");
-    //             } else {
-    //                 console.log("You and the computer tied. You should consider yourself special, this doesn't usually happen. Try again?");
-    //             }
-    //     }
+function game(roundNum) {
+    if (roundNum % 5 == 0) {
+        console.log("Game completed!");
+        if (playerWins > computerWins) {
+                winner.textContent = "Looks like you won this game! Nice job! Now why don't you try again...";
+            } else if (playerWins < computerWins) {
+                winner.textContent = "The computer won! You lost to an algorithm. Why don't you try again?";
+            } else {
+                winner.textContent = "You and the computer tied. You should consider yourself special, this doesn't usually happen. Try again?";
+            }
+    }
 
-    //     if (roundNum == 1) {
-    //         console.log(`${roundNum} round completed.`);
-    //         console.log(`Keep playing for ${5 - roundNum} more rounds to complete a game.`);
-    //     } else if (roundNum == 4) {
-    //         console.log(`${roundNum} rounds completed.`);
-    //         console.log(`Keep playing for ${5 - roundNum} more round to complete a game.`);
-    //     } else if (roundNum < 5) {
-    //         console.log(`${roundNum} rounds completed.`);
-    //         console.log(`Keep playing for ${5 - roundNum} more rounds to complete a game.`);
-    //     } else if (roundNum === 5) {
-    //         roundNum = 0;
-    //         playerWins = 0;
-    //         computerWins = 0;
-    //     }
-    // }
+    if (roundNum == 1) {
+        roundcount.textContent = `${roundNum} round completed.\nKeep playing for ${5 - roundNum} more rounds to complete a game.`;
+    } else if (roundNum == 4) {
+        roundcount.textContent = `${roundNum} rounds completed.\nKeep playing for 1 more round to complete a game.`;
+    } else if (roundNum < 5) {
+        roundcount.textContent = `${roundNum} rounds completed.\nKeep playing for ${5 - roundNum} more rounds to complete a game.`;
+    } else if (roundNum === 5) {
+        roundcount.textContent = `Game completed! No more rounds...unless you'd like to play again?`;
+        const replay = document.createElement("button");
+        replay.textContent = "Play again!"
+        replay.style.cssText = "display: block; margin-top: 75px;"
+        redo.appendChild(replay);
+        replay.addEventListener("click", () => {
+            roundNum = 0;
+            playerWins = 0;
+            computerWins = 0;
+            play();
+        })   
+    }
+}
     
 scoreboard.appendChild(match);
 data.appendChild(scoreboard);
-data.appendChild(results);
+data.appendChild(presults);
+data.appendChild(cresults);
+data.appendChild(winner);
+data.appendChild(roundcount);
+
+function play() {
+    CHOICES.forEach((choice) => {
+    choice.addEventListener("click", (e) => {
+    if (choice.getAttribute("id") === "rock") {
+        playerChoice = "Rock";
+        game(round(playerChoice, getComputerChoice()));
+    } else if (choice.getAttribute("id") === "scissors") {
+        playerChoice = "Scissors";
+        game(round(playerChoice, getComputerChoice()));
+    } else if (choice.getAttribute("id") === "paper") {
+        playerChoice = "Paper";
+        game(round(playerChoice, getComputerChoice()));
+    }
+    })
+})};
+
+play();
