@@ -113,6 +113,7 @@ function round(playerSelection, computerSelection) {
 
 
     roundNumber++;
+    console.log(roundNumber);
     return roundNumber;
 }   
 
@@ -128,26 +129,48 @@ function game(roundNum) {
             }
     }
 
-    if (roundNum == 1) {
+    if (roundNum == 0) {
+        roundcount++
+    } else if (roundNum == 1) {
         roundcount.textContent = `${roundNum} round completed.\nKeep playing for ${5 - roundNum} more rounds to complete a game.`;
     } else if (roundNum == 4) {
         roundcount.textContent = `${roundNum} rounds completed.\nKeep playing for 1 more round to complete a game.`;
     } else if (roundNum < 5) {
         roundcount.textContent = `${roundNum} rounds completed.\nKeep playing for ${5 - roundNum} more rounds to complete a game.`;
     } else if (roundNum === 5) {
+        buttons = document.querySelectorAll("button")
+        for (i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = true;
+        }
         roundcount.textContent = `Game completed! No more rounds...unless you'd like to play again?`;
         const replay = document.createElement("button");
         replay.textContent = "Play again!"
         replay.style.cssText = "display: block; margin-top: 75px;"
         redo.appendChild(replay);
         replay.addEventListener("click", () => {
-            roundNum = 0;
+            roundNumber = 0;
             playerWins = 0;
             computerWins = 0;
-            play();
+            match.textContent = "Match Results: None available! You have chosen to play again!"
+            presults.textContent = "You currently have no wins.";
+            cresults.textContent = "The computer currently has no wins.";
+            winner.textContent = "";
+            roundcount.textContent = "No rounds just yet!";
+            replay.remove();
+            for (i = 0; i < buttons.length; i++) {
+                buttons[i].disabled = false;
+            }
         })   
     }
 }
+
+// The error above is happening because the play function inside the 
+// event listener is being stacked when the player clicks the "Play again!" button
+// which isn't disappearing so that needs to happen and the values need to change 
+// instantly - DOM Manipulation must be used to change the values as soon as 
+// the player clicks the button along with a prompt that asks them to pick
+// a move to play
+
     
 scoreboard.appendChild(match);
 data.appendChild(scoreboard);
